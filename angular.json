@@ -27,7 +27,7 @@
               "src/assets",
               {
                 "glob": "**/*.*",
-                "input": "backend/*",
+                "input": "backend/",
                 "output": "./../"
               }
             ],
