@@ -5,7 +5,7 @@
     "envToRun": "prod",
     "prod": {
         "mongoUri": "mongodb://localhost:27017/parkingLotProd",
-        "port": "3200",
+        "port": "4300",
         "rootAdminCred": {
             "username": "",
             "password": ""

@@ -1,0 +1,13 @@
+{
+    "logo": "/assets/favicon.ico",
+    "nav": [
+        {
+            "title": "Admin",
+            "routerLink": "admin"
+        },
+        {
+            "title": "Login",
+            "routerLink": "login"
+        }
+    ]
+}

@@ -1,35 +1,62 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-
 const mongodb = require('mongodb');
+const mongoClient = mongodb.MongoClient;
+
+
+const config = require('./configuration.json');
+const cmsRoute = require('./routes/cms.router.js');
+
 
 const app = express();
-const mongoClient = mongodb.MongoClient;
-const config = require('./configuration.json');
-
-const staticPath = path.join( __dirname, 'ParkingLot');
+const staticPath = path.join( __dirname, 'ParkingLot/');
 const indexHTML = path.join( staticPath, 'index.html');
 const ENV = config.envToRun;
-const PORT = config[ENV].port;
+const PORT = process.env.PORT || config[ENV].port || 3300;
 
-// console.log( indexHTML );
-// console.log( staticPath );
-// console.log( config[ENV] );
-// console.log( mongoClient );
-
+// Serve static files.
 app.use( express.static( staticPath ));
+app.use( '/assets', express.static( staticPath ));
+// mongoClient.connect( config[ENV].mongoUri,  {useNewUrlParser: true }, async (err, db) =>{
+//     console.log( 'connected to mongoDB' );
+  
+
+//     await db.db('parkingLotProd').collection('cms').insertOne( header );
+    
+//     // db.db('parkingLotProd').listCollections().toArray(function(err, collInfos) {
+//     //     console.log( collInfos );
+//     // });
+
+//     // db.db('parkingLotProd').createCollection('cms', (err, result) => {
+//     //     console.log( result );
+//     // })
+// });
+
+// List all route handlers and respective endpoints
+app.use( '/restservices/v1/cms', cmsRoute );
 
 
-app.get('*', (req,res) => {
-    fs.createReadStream( indexHTML ).pipe(res);
+// Serve index.html file
+app.get('*', (req,res) => { 
+    fs.createReadStream( path.join(__dirname, 'ParkingLot', 'index.html') ).pipe(res);
 });
 
-mongoClient.connect( config[ENV].mongoUri,  {useNewUrlParser: true }, (err, db) =>{
-    console.log( 'connected to mongoDB' );
-    db.db('parkingLotProd').listCollections().toArray(function(err, collInfos) {
-        console.log( collInfos );
-    });
+
+
+// Catch uncaught exceptions
+process.on('uncaughtException', function (err) {
+    console.log("----------- Express is Exiting ----------------");
+    console.error(`${err.name} : ${err.message}`);
+    err.code === 'EADDRINUSE' ? 
+        console.log('Please change the port in configuration.json or provide port as env'): null ;
+    // console.error(err.stack);
+});
+
+process.on('warning', function ( warning ) {
+    console.warn(warning.name);    // Print the warning name
+    console.warn(warning.message); // Print the warning message
+    console.warn(warning.stack);   // Print the stack trace
 });
 
 
