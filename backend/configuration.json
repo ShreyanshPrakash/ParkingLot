@@ -1,0 +1,32 @@
+{
+    "note": "I have seen the config files getting really big hence, its better to use separate file for each env",
+    "howToUse": "set env using 'node SET ENV_VAR=<env> <server.js>' else will default to prod",
+
+    "envToRun": "prod",
+    "prod": {
+        "mongoUri": "mongodb://localhost:27017/parkingLotProd",
+        "port": "3200",
+        "rootAdminCred": {
+            "username": "",
+            "password": ""
+        }
+
+    },
+
+    "dev": {
+        "mongoUri": "mongodb://localhost:27017/parkingLotProd",
+        "rootAdminCred": {
+            "username": "",
+            "password": ""
+        }
+    },
+
+    "test": {
+        "mongoUri": "mongodb://localhost:27017/parkingLotProd",
+        "rootAdminCred": {
+            "username": "",
+            "password": ""
+        }
+    }
+
+}
